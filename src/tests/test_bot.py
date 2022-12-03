@@ -11,7 +11,6 @@ from PyVkBot import Bot, Types, Exceptions, Keyboard
 
 token = os.getenv('TEST_ACCESS_TOKEN')
 group_id = int(os.getenv('TEST_GROUP_ID'))
-peer_id = int(os.getenv('TEST_PEER_ID'))
 
 bot = Bot(
     token=token,
@@ -134,9 +133,10 @@ def test_handling_vkapi_error(prepare_events):
                              Keyboard(inline=False),
                              Keyboard(inline=True)
                          ])
-def test_send_message_with_keyboard(keyboard):
+def test_send_message_with_keyboard(keyboard, monkeypatch):
+    monkeypatch.setattr('vk_api.VkApi.method', lambda *_: 'mother')
     keyboard.add_button(label="123")
-    bot.send_message(peer_id=peer_id, text="hello", keyboard=keyboard)
-    bot.send_message(peer_id=peer_id, text="hello", keyboard=keyboard.get_keyboard())
-    bot.send_message(peer_id=peer_id, text='removed', keyboard=keyboard.get_empty_keyboard())
+    bot.send_message(peer_id=123, text="hello", keyboard=keyboard)
+    bot.send_message(peer_id=123, text="hello", keyboard=keyboard.get_keyboard())
+    bot.send_message(peer_id=123, text='removed', keyboard=keyboard.get_empty_keyboard())
 
