@@ -1,0 +1,6 @@
+venv/
+.pytest_cache
+.coverage
+htmlcov
+dist
+PyVkBot.egg-info
