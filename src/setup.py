@@ -8,7 +8,7 @@ install_requires = [
 
 from pathlib import Path
 
-readme_directory = Path(__file__).parent
+readme_directory = Path(__file__).parent.parent
 if Path.exists(readme_directory / "README.md"):
     long_description = (readme_directory / "README.md").read_text(encoding='utf-16LE')
 else:
@@ -17,7 +17,7 @@ else:
 
 setup(name='PyVkBot',
       python_requires='>3.10',
-      version='1.0.3',
+      version='1.0.4',
       description='Chat bot for vk.com',
       packages=['PyVkBot'],
       author='zeph1rr',
