@@ -17,7 +17,7 @@ else:
 
 setup(name='PyVkBot',
       python_requires='>3.10',
-      version='1.0.4',
+      version='1.0.5',
       description='Chat bot for vk.com',
       packages=['PyVkBot'],
       author='zeph1rr',
