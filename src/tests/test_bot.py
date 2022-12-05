@@ -124,7 +124,6 @@ def test_handling_vkapi_error(prepare_events):
     def raise_vkapi_error():
         raise vk_api.exceptions.ApiError(bot.vk_session, "messages.send", '123', '123',
                                          {"error_code": 123, "error_msg": "321"})
-    prepare_events()
     bot.start_polling(raise_vkapi_error)
 
 
