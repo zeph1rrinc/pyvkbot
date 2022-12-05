@@ -8,7 +8,7 @@ install_requires = [
 
 from pathlib import Path
 readme_directory = Path(__file__).parent.parent
-long_description = (readme_directory / "README.md").read_text()
+long_description = (readme_directory / "README.md").read_text(encoding='utf-16LE')
 print(long_description)
 
 
