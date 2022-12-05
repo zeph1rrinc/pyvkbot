@@ -1,4 +1,7 @@
 class ActionTypes:
+    """
+    Types of action events
+    """
     CHAT_PHOTO_UPDATE = 'chat_photo_update'
 
     CHAT_PHOTO_REMOVE = 'chat_photo_remove'
@@ -19,6 +22,9 @@ class ActionTypes:
 
 
 class EventTypes:
+    """
+    Types of events
+    """
     MESSAGE = 'message'
 
     ACTION = 'action'
@@ -27,6 +33,9 @@ class EventTypes:
 
 
 class AttachmentTypes:
+    """
+    Types of attachments
+    """
     PHOTO = 'photo'
 
     VIDEO = 'video'
