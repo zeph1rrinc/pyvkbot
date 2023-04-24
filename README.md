@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=black)
 
-[![tests&build](https://img.shields.io/github/workflow/status/zeph1rrinc/pyvkbot/tests/master?label=test%26build&logo=github&logoColor=white)](https://github.com/zeph1rrinc/pyvkbot/actions)
+[![tests&build](https://img.shields.io/github/workflow/status/zeph1rrinc/pyvkbot/publish/master?label=release%26build&logo=github&logoColor=white)](https://github.com/zeph1rrinc/pyvkbot/actions)
 [![LICENCE](https://img.shields.io/badge/License-MIT-yellow.svg?logo=ReadtheDocs&logoColor=white)](/LICENSE.md)
 [![Version](https://img.shields.io/pypi/v/pyvkbot?logo=pypi&logoColor=white)](https://pypi.org/project/PyVkBot/)
 

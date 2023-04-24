@@ -1,15 +1,12 @@
-name: tests
+name: release
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches-ignore:
-      - main
+    tags:
+    - '*'
 
 jobs:
-  run_tests:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check-out repository
@@ -33,7 +30,18 @@ jobs:
         run: |
           poetry run pytest -sv
 
-      - name: Publish to test pypi
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Build project
         run: |
-          poetry version patch
-          poetry publish -r test-pypi --build -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }}
+          poetry version $RELEASE_VERSION
+          poetry build
+
+      - name: Publish project
+        run: poetry publish -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          bodyFile: "CHANGELOG.md"
