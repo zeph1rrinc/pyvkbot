@@ -31,5 +31,4 @@ jobs:
           TEST_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
           TEST_GROUP_ID: ${{secrets.TEST_GROUP_ID}}
         run: |
-          cd src
           poetry run pytest -sv
