@@ -1,0 +1,52 @@
+name: release
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Run tests
+        env:
+          TEST_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
+          TEST_GROUP_ID: ${{secrets.TEST_GROUP_ID}}
+        run: |
+          poetry run pytest -sv
+
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Build project
+        run: |
+          poetry version $RELEASE_VERSION
+          poetry build
+
+      - name: Publish to test pypi
+        run: |
+          poetry config repositories.test-pypi https://test.pypi.org/legacy/
+          poetry publish -r test-pypi --build -u zeph1rr -p ${{ secrets.TEST_PYPI_PASSWORD }}
+
+      - name: Publish project
+        run: poetry publish -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          bodyFile: "CHANGELOG.md"

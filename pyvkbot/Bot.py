@@ -17,17 +17,17 @@ class Bot:
     :param token: VK access token
     :type token: str
 
-    :param main_chat: id of main chat for bot
-    :type main_chat: int
-
     :param group_id: id of your group
     :type group_id: int
+
+    :param main_chat: id of main chat for bot
+    :type main_chat: int
 
     :param logging: if True - logging in stdout by loguru.logger
     :type logging: bool
     """
 
-    def __init__(self, token: str, main_chat: int = None, group_id: int = None, logging: bool = True):
+    def __init__(self, token: str, group_id: int, main_chat: int = None, logging: bool = True):
         self.main_chat = main_chat
         self.vk_session = vk_api.VkApi(token=token)
         self.longpoll = VkBotLongPoll(self.vk_session, group_id=group_id)
@@ -166,6 +166,7 @@ class Bot:
             f"With payload {json.dumps(payload, ensure_ascii=False).encode('utf-8').decode()}. "
             f"Response: {json.dumps(response, ensure_ascii=False).encode('utf-8').decode()}"
         )
+        return response
 
     def send_message(self, peer_id: int, text: str, keyboard: Union[str, Keyboard] = None):
         """
