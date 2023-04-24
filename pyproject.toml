@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "pyvkbot"
+version = "2.0.0"
+description = "Package for creating vk bots"
+authors = ["zeph1rr <grianton535@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+loguru = "^0.7.0"
+vk-api = "^11.9.9"
+requests = "^2.28.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.2.2"
+pytest = "^7.3.1"
+flake8 = "^6.0.0"
+black = "^23.3.0"
+reorder-python-imports = "^3.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

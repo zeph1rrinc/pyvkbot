@@ -21,24 +21,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install poetry
+          poetry install
 
       - name: Run tests
         env:
           TEST_ACCESS_TOKEN: ${{secrets.TEST_ACCESS_TOKEN}}
           TEST_GROUP_ID: ${{secrets.TEST_GROUP_ID}}
-          TEST_PEER_ID: ${{secrets.TEST_PEER_ID}}
         run: |
           cd src
-          pytest
-
-      - name: Build package
-        run: |
-          cd src
-          pip install twine setuptools
-          python setup.py sdist
-
-      - name: Deploy to test pypi
-        run: |
-          cd src
-          twine upload -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }} dist/*
+          poetry run pytest -sv

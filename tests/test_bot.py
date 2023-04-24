@@ -5,8 +5,7 @@ import pytest
 import requests
 import vk_api
 
-from .test_fixtures import prepare_events
-from PyVkBot import Bot, Types, Exceptions, Keyboard
+from pyvkbot import Bot, Types, Exceptions, Keyboard
 
 
 token = os.getenv('TEST_ACCESS_TOKEN')
