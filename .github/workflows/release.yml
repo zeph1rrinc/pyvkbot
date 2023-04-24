@@ -38,6 +38,11 @@ jobs:
           poetry version $RELEASE_VERSION
           poetry build
 
+      - name: Publish to test pypi
+        run: |
+          poetry config repositories.test-pypi https://test.pypi.org/legacy/
+          poetry publish -r test-pypi --build -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }}
+
       - name: Publish project
         run: poetry publish -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }}
 

@@ -32,8 +32,3 @@ jobs:
           TEST_GROUP_ID: ${{secrets.TEST_GROUP_ID}}
         run: |
           poetry run pytest -sv
-
-      - name: Publish to test pypi
-        run: |
-          poetry version patch
-          poetry publish -r test-pypi --build -u zeph1rr -p ${{ secrets.PYPI_PASSWORD }}
