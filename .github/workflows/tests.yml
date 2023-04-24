@@ -5,6 +5,8 @@ on:
     branches:
       - main
   push:
+    branches-ignore:
+      - main
 
 jobs:
   run_tests:
