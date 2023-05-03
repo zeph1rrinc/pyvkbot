@@ -7,9 +7,8 @@ grianton535@gmail.com
 
 License: MIT
 """
-import Exceptions
-import Types
-
+from . import Exceptions
+from . import Types
 from .Bot import Bot
 from .Keyboard import Keyboard
 
