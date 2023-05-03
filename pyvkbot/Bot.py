@@ -40,6 +40,7 @@ class Bot:
         self.main_chat = main_chat
         self.vk_session = vk_api.VkApi(token=token)
         self.longpoll = VkBotLongPoll(self.vk_session, group_id=group_id)
+        self.logging = logging
 
         self.events = {
             EventTypes.MESSAGE: {},
@@ -50,9 +51,6 @@ class Bot:
         self.start_command = None
         self.default_message = None
 
-        if not logging:
-            logger.remove(handler_id=0)
-
     def __bind(self, command: str, callback: Callable):
         cmd = command.lower()
         if cmd in self.events[EventTypes.MESSAGE]:
@@ -61,7 +59,14 @@ class Bot:
 
     def __handle_events(self, event: str, trigger: str, message: dict):
         self.events[event][trigger](self, message)
-        logger.debug(f"handle event '{event}' with trigger '{trigger}'")
+        self.__log(f"handle event '{event}' with trigger '{trigger}'")
+
+    def __log(self, message: str, error: bool = False):
+        if self.logging:
+            if error:
+                logger.error(message)
+                return
+            logger.debug(message)
 
     def __validate_event(self, event: str, trigger: str = None):
         if event in (EventTypes.ACTION, EventTypes.ATTACHMENT) and not trigger:
@@ -173,7 +178,7 @@ class Bot:
                 raise NotAvailableEventError(
                     f"Not available event named '{event}'. See doc for more information"
                 )
-        logger.debug(f"Bound new event '{event}', with trigger '{trigger}'")
+        self.__log(f"Bound new event '{event}', with trigger '{trigger}'")
 
     def parse_message(self, message: dict):
         """
@@ -204,7 +209,7 @@ class Bot:
                 self.__handle_events(EventTypes.ATTACHMENT, attachment_type, message)
                 return
         if msg:
-            logger.debug(f"Received new message from chat {id} - '{msg}'")
+            self.__log(f"Received new message from chat {id} - '{msg}'")
             for command in self.events[EventTypes.MESSAGE]:
                 if command.find(cmd) != -1:
                     self.__handle_events(EventTypes.MESSAGE, cmd, message)
@@ -232,7 +237,7 @@ class Bot:
         :type payload: dict
         """
         response = self.vk_session.method(method, payload)
-        logger.debug(
+        self.__log(
             f"Sent api method '{method}'. "
             f"With payload {json.dumps(payload, ensure_ascii=False).encode('utf-8').decode()}. "
             f"Response: {json.dumps(response, ensure_ascii=False).encode('utf-8').decode()}"
@@ -276,8 +281,8 @@ class Bot:
                 if event.type == VkBotEventType.MESSAGE_NEW:
                     self.parse_message(event.message)
         except requests.exceptions.ReadTimeout as _ex:
-            logger.error(_ex)
+            self.__log(_ex, error=True)
             self.start_polling()
         except vk_api.exceptions.ApiError as _ex:
-            logger.error(_ex)
+            self.__log(_ex, error=True)
             self.start_polling()
