@@ -1,13 +1,20 @@
 import json
-from typing import Callable, Union
+from typing import Callable
+from typing import Union
+
 import requests
 import vk_api
-from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from loguru import logger
+from vk_api.bot_longpoll import VkBotEventType
+from vk_api.bot_longpoll import VkBotLongPoll
 
-from .Types import ActionTypes, EventTypes, AttachmentTypes
-from .Exceptions import NotAvailableEventError, UnexpectedTriggerError, DuplicateTriggerError
+from .Exceptions import DuplicateTriggerError
+from .Exceptions import NotAvailableEventError
+from .Exceptions import UnexpectedTriggerError
 from .Keyboard import Keyboard
+from .Types import ActionTypes
+from .Types import AttachmentTypes
+from .Types import EventTypes
 
 
 class Bot:
@@ -27,7 +34,9 @@ class Bot:
     :type logging: bool
     """
 
-    def __init__(self, token: str, group_id: int, main_chat: int = None, logging: bool = True):
+    def __init__(
+        self, token: str, group_id: int, main_chat: int = None, logging: bool = True
+    ):
         self.main_chat = main_chat
         self.vk_session = vk_api.VkApi(token=token)
         self.longpoll = VkBotLongPoll(self.vk_session, group_id=group_id)
@@ -35,7 +44,7 @@ class Bot:
         self.events = {
             EventTypes.MESSAGE: {},
             EventTypes.ACTION: {},
-            EventTypes.ATTACHMENT: {}
+            EventTypes.ATTACHMENT: {},
         }
 
         self.start_command = None
@@ -56,13 +65,29 @@ class Bot:
 
     def __validate_event(self, event: str, trigger: str = None):
         if event in (EventTypes.ACTION, EventTypes.ATTACHMENT) and not trigger:
-            raise UnexpectedTriggerError(f"Not enough arguments for event '{event}'. See doc for more information")
+            raise UnexpectedTriggerError(
+                f"Not enough arguments for event '{event}'. See doc for more information"
+            )
         if trigger:
-            if any([
-                all([event == EventTypes.ACTION, trigger.upper() not in ActionTypes.__dict__]),
-                all([event == EventTypes.ATTACHMENT, trigger.upper() not in AttachmentTypes.__dict__])
-            ]):
-                raise UnexpectedTriggerError(f"Unexpected option '{trigger}' for event '{event}'")
+            if any(
+                [
+                    all(
+                        [
+                            event == EventTypes.ACTION,
+                            trigger.upper() not in ActionTypes.__dict__,
+                        ]
+                    ),
+                    all(
+                        [
+                            event == EventTypes.ATTACHMENT,
+                            trigger.upper() not in AttachmentTypes.__dict__,
+                        ]
+                    ),
+                ]
+            ):
+                raise UnexpectedTriggerError(
+                    f"Unexpected option '{trigger}' for event '{event}'"
+                )
         return True
 
     def delete_message(self, peer_id: int, cmids: list):
@@ -74,7 +99,51 @@ class Bot:
         :param cmids: list of conversations ids of message, which you want to delete
         :type cmids: list
         """
-        self.send_api_method("messages.delete", {"peer_id": peer_id, "cmids": cmids, "delete_for_all": 1})
+        self.send_api_method(
+            "messages.delete", {"peer_id": peer_id, "cmids": cmids, "delete_for_all": 1}
+        )
+
+    def message(self, trigger: str = None):
+        """
+        Decorator for creating handlers for messages
+
+        :param trigger: trigger message for command. None for default answer
+        :param type: str
+        """
+
+        def _wrapper(func):
+            self.on(event=EventTypes.MESSAGE, callback=func, trigger=trigger)
+            return func
+
+        return _wrapper
+
+    def attachment(self, trigger: str):
+        """
+        Decorator for creating handlers for attachments
+
+        :param trigger: type of trigger attachment
+        :param type: str
+        """
+
+        def _wrapper(func):
+            self.on(event=EventTypes.ATTACHMENT, callback=func, trigger=trigger)
+            return func
+
+        return _wrapper
+
+    def action(self, trigger: str):
+        """
+        Decorator for creating handlers for actions
+
+        :param trigger: type of trigger action
+        :param type: str
+        """
+
+        def __wrapper(func):
+            self.on(event=EventTypes.ACTION, callback=func, trigger=trigger)
+            return func
+
+        return __wrapper
 
     def on(self, event: str, callback: Callable, trigger: str = None):
         """
@@ -101,7 +170,9 @@ class Bot:
             case EventTypes.ATTACHMENT:
                 self.events[EventTypes.ATTACHMENT][trigger] = callback
             case _:
-                raise NotAvailableEventError(f"Not available event named '{event}'. See doc for more information")
+                raise NotAvailableEventError(
+                    f"Not available event named '{event}'. See doc for more information"
+                )
         logger.debug(f"Bound new event '{event}', with trigger '{trigger}'")
 
     def parse_message(self, message: dict):
@@ -111,24 +182,24 @@ class Bot:
         :param message: message dict from event object
         :type message: dict
         """
-        msg = message['text'].lower()
-        cmd = msg.split('\n')[0].strip()
+        msg = message["text"].lower()
+        cmd = msg.split("\n")[0].strip()
         id = message.get("peer_id")
         attachments = message.get("attachments")
         payload = None
-        if message.get('payload'):
-            payload = json.loads(message['payload'])
-        action = message.get('action')
-        if payload and payload.get('command') == 'start' and self.start_command:
+        if message.get("payload"):
+            payload = json.loads(message["payload"])
+        action = message.get("action")
+        if payload and payload.get("command") == "start" and self.start_command:
             self.start_command(self, message)
             return
         if action:
-            action_type = action['type']
+            action_type = action["type"]
             if action_type in self.events[EventTypes.ACTION]:
-                self.__handle_events(EventTypes.ACTION, action['type'], message)
+                self.__handle_events(EventTypes.ACTION, action["type"], message)
                 return
         if attachments:
-            attachment_type = attachments[0]['type']
+            attachment_type = attachments[0]["type"]
             if attachment_type in self.events[EventTypes.ATTACHMENT]:
                 self.__handle_events(EventTypes.ATTACHMENT, attachment_type, message)
                 return
@@ -168,7 +239,9 @@ class Bot:
         )
         return response
 
-    def send_message(self, peer_id: int, text: str, keyboard: Union[str, Keyboard] = None):
+    def send_message(
+        self, peer_id: int, text: str, keyboard: Union[str, Keyboard] = None
+    ):
         """
         Sending message in chat
 
@@ -181,16 +254,12 @@ class Bot:
         :param keyboard: [OPTIONAL] Keyboard for user, if needed. Takes Keyboard class or json string
         :type keyboard: str | Keyboard
         """
-        data = {
-            "peer_id": peer_id,
-            "message": text,
-            "random_id": 0
-        }
+        data = {"peer_id": peer_id, "message": text, "random_id": 0}
         if keyboard:
             if type(keyboard) == str:
-                data['keyboard'] = keyboard
+                data["keyboard"] = keyboard
             else:
-                data['keyboard'] = keyboard.get_keyboard()
+                data["keyboard"] = keyboard.get_keyboard()
         self.send_api_method("messages.send", data)
 
     def start_polling(self, callback: Callable = None):
