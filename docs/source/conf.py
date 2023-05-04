@@ -6,6 +6,8 @@ import sys
 
 from pip._vendor.pkg_resources import parse_version
 
+sys.path.insert(0, os.path.abspath("../.."))
+
 import pyvkbot
 
 sys.path.insert(0, os.path.abspath("../.."))
