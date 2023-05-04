@@ -1,12 +1,10 @@
 Usage
 =====
 
-.. _installation:
-
 Creating bots
 ----------------
 
-First of all you should get the api_key for you bot using the `oficial docs`: https://dev.vk.com/api/bots/getting-started
+First of all you should get the api_key for you bot using the `oficial docs <https://dev.vk.com/api/bots/getting-started>`_
 
 To create the bot, you can use the ``pyvkbot.Bot()`` class:
 
