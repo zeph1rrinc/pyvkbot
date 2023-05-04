@@ -1,12 +1,22 @@
 # Configuration file for the Sphinx documentation builder.
 # -- Project information
+import datetime
+import os
+import sys
+
+from pip._vendor.pkg_resources import parse_version
+
+import pyvkbot
+
+sys.path.insert(0, os.path.abspath("../.."))
 
 project = "pyvkbot"
-copyright = "2023, Zeph1rr"
 author = "Zeph1rr"
+copyright = f"{datetime.datetime.now().year}, {author}"
 
-release = "2.0"
-version = "2.0.1"
+parsed_version = parse_version(pyvkbot.__version__)
+
+version = parsed_version.base_version
 
 # -- General configuration
 
