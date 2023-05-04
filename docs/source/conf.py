@@ -17,6 +17,8 @@ copyright = f"{datetime.datetime.now().year}, {author}"
 parsed_version = parse_version(pyvkbot.__version__)
 
 version = parsed_version.base_version
+release = pyvkbot.__version__
+
 
 # -- General configuration
 
