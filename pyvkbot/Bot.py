@@ -21,17 +21,15 @@ class Bot:
     """
     Main class for working with vk bot
 
-    :param token: VK access token
-    :type token: str
+    **Args**:
 
-    :param group_id: id of your group
-    :type group_id: int
+    token: *str* - VK access token
 
-    :param main_chat: id of main chat for bot
-    :type main_chat: int
+    group_id: *int* -  id of your group
 
-    :param logging: if True - logging in stdout by loguru.logger
-    :type logging: bool
+    main_chat: *int* - id of main chat for bot
+
+    logging: *bool* - if True - logging in stdout by loguru.logger
     """
 
     def __init__(
