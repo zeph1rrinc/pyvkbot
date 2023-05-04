@@ -1,12 +1,12 @@
 # Configuration file for the Sphinx documentation builder.
 # -- Project information
 
-project = "Lumache"
-copyright = "2021, Graziella"
-author = "Graziella"
+project = "pyvkbot"
+copyright = "2023, Zeph1rr"
+author = "Zeph1rr"
 
-release = "0.1"
-version = "0.1.0"
+release = "2.0"
+version = "2.0.1"
 
 # -- General configuration
 
