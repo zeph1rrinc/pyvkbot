@@ -1,4 +1,3 @@
 - Small code refactoring
-- Fixed a bug where the send_api_method method did not return a response
-- The group_id field has become mandatory in accordance with the vk_api specification
-- Migrated from pip to poetry
+- Added read the docs
+- Added decorators for commands
