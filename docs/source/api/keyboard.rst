@@ -5,6 +5,6 @@ Keyboard
 ------------
 This class based on `vk_api.keyboard.VkKeyboard`_https://vk-api.readthedocs.io/en/latest/keyboard.html
 
-.. autoclass:: pyvkbot.Keyboard.Keyboard
+.. autoclass:: pyvkbot.Keyboard
     :members:
     :show-inheritance:
