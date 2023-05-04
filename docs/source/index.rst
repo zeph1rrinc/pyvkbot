@@ -19,5 +19,5 @@ Contents
 
    install
    usage
+   api
    examples/index
-   api/index
