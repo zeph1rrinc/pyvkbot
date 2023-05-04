@@ -19,4 +19,5 @@ Contents
 
    install
    usage
+   examples/index
    api

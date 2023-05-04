@@ -51,5 +51,3 @@ Start the bot
           bot.start_polling(lambda: print("Bot started"))
 
 Enjoy your bot!
-
-Bot examples you can see on https://github.com/zeph1rrinc/pyvkbot/tree/master/examples
