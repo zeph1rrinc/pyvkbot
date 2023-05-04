@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyvkbot"
-version = "2.0.0"
+version = "2.0.5"
 description = "Package for creating vk bots"
 authors = ["zeph1rr <grianton535@gmail.com>"]
 readme = "README.md"

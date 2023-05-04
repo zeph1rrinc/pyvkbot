@@ -13,4 +13,4 @@ from .Bot import Bot
 from .Keyboard import Keyboard
 
 __all__ = [Bot, Keyboard, Exceptions, Types]
-__version__ = "2.0.1"
+__version__ = "2.0.5"
