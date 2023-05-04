@@ -7,8 +7,10 @@ grianton535@gmail.com
 
 License: MIT
 """
-
+from . import Exceptions
+from . import Types
 from .Bot import Bot
 from .Keyboard import Keyboard
-from .Exceptions import *
-from .Types import *
+
+__all__ = [Bot, Keyboard, Exceptions, Types]
+__version__ = "2.0.1"
