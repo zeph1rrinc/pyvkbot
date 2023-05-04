@@ -22,6 +22,14 @@ This class based on `vk_api.keyboard.VkKeyboard <https://vk-api.readthedocs.io/e
 Types
 ------------
 
-.. autoclass:: pyvkbot.Types
+.. autoclass:: pyvkbot.Types.EventTypes
+    :members:
+    :show-inheritance:
+
+.. autoclass:: pyvkbot.Types.ActionTypes
+    :members:
+    :show-inheritance:
+
+.. autoclass:: pyvkbot.Types.AttachmentTypes
     :members:
     :show-inheritance:
