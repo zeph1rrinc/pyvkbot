@@ -20,4 +20,4 @@ Contents
    install
    usage
    examples/index
-   api
+   api/index
